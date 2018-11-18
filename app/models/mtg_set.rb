@@ -2,6 +2,8 @@ class MtgSet < ApplicationRecord
   validates :name, :code, presence: true
   validates :code, uniqueness: { case_sensitive: false }
 
+  has_many :cards, class_name: 'MtgCard', foreign_key: :set_code, primary_key: :code
+
   API_ATTRS = %w(code name released_at set_type card_count parent_set_code block_code block).freeze
 
   def self.from_api(json)

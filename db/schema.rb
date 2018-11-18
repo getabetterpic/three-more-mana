@@ -10,11 +10,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_18_142635) do
+ActiveRecord::Schema.define(version: 2018_11_18_175054) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "plpgsql"
+
+  create_table "mtg_cards", force: :cascade do |t|
+    t.string "uuid", null: false
+    t.string "name", null: false
+    t.string "layout"
+    t.boolean "hires_image"
+    t.jsonb "image_uris"
+    t.string "mana_cost"
+    t.decimal "cmc"
+    t.string "type_line"
+    t.string "oracle_text"
+    t.string "power"
+    t.string "toughness"
+    t.jsonb "colors"
+    t.jsonb "color_identity"
+    t.jsonb "legalities"
+    t.string "set_code", null: false
+    t.string "rarity"
+    t.jsonb "card_faces"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["set_code"], name: "index_mtg_cards_on_set_code"
+    t.index ["uuid"], name: "index_mtg_cards_on_uuid", unique: true
+  end
 
   create_table "mtg_sets", force: :cascade do |t|
     t.string "code", null: false
