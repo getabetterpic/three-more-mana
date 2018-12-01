@@ -11,6 +11,7 @@ class MtgCard < ApplicationRecord
   scope :modern_legal, -> { where("legalities->>'modern' = 'legal'") }
   scope :legacy_legal, -> { where("legalities->>'legacy' = 'legal'") }
   scope :commander_legal, -> { where("legalities->>'commander' = 'legal'") }
+  scope :legal, -> { standard_legal.or(modern_legal).or(legacy_legal).or(commander_legal) }
   scope :not_land, -> { where.not('type_line LIKE ?', '%Land%') }
 
   def self.from_api(json)
