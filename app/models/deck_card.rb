@@ -4,4 +4,14 @@ class DeckCard < ApplicationRecord
   validates :card_id, uniqueness: { scope: :deck_id }
   belongs_to :deck
   belongs_to :card, class_name: 'MtgCard'
+
+  def increment_count!(count = 1)
+    self.card_count += count
+    save!
+  end
+
+  def decrement_count!(count = 1)
+    self.card_count -= count
+    save!
+  end
 end

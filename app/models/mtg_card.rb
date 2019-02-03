@@ -3,6 +3,8 @@ class MtgCard < ApplicationRecord
   validates :uuid, presence: true, uniqueness: { case_sensitive: false }
 
   belongs_to :set, class_name: 'MtgSet', foreign_key: :set_code, primary_key: :code
+  has_many :deck_cards
+  has_many :decks, through: :deck_cards
 
   API_ATTRS = %w(name layout hires_image image_uris mana_cost cmc type_line oracle_text power toughness colors
     color_identity legalities rarity card_faces).freeze
@@ -13,6 +15,7 @@ class MtgCard < ApplicationRecord
   scope :commander_legal, -> { where("legalities->>'commander' = 'legal'") }
   scope :legal, -> { standard_legal.or(modern_legal).or(legacy_legal).or(commander_legal) }
   scope :not_land, -> { where.not('type_line LIKE ?', '%Land%') }
+  scope :not_basic_land, -> { where.not('type_line LIKE ?', 'Basic Land%') }
 
   def self.from_api(json)
     card = find_or_initialize_by(uuid: json['id'])
