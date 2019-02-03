@@ -7,7 +7,9 @@ class Deck < ApplicationRecord
   has_many :cards, -> { extending DeckCardsExtension }, through: :deck_cards
 
   def standard_legal?
-    return false unless deck_cards.sum(:card_count).in? 60..75
+    mainboard_hash = deck_cards.group(:mainboard).sum(:card_count)
+    return false unless mainboard_hash[true] == 60
+    return false if mainboard_hash[false] && !mainboard_hash[false]&.in?(0..15)
     return false if deck_cards.joins(:card)
       .where("mtg_cards.type_line NOT LIKE 'Basic Land%'")
       .group("mtg_cards.name")

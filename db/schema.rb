@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_01_155222) do
+ActiveRecord::Schema.define(version: 2019_02_03_134807) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 2018_12_01_155222) do
     t.integer "card_count", default: 1
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "mainboard", default: true, null: false
     t.index ["card_id"], name: "index_deck_cards_on_card_id"
     t.index ["deck_id"], name: "index_deck_cards_on_deck_id"
   end
