@@ -1,4 +1,4 @@
-class MtgCardsController < ApplicationController
+class Api::V1::MtgCardsController < Api::V1Controller
   def show
     @card = MtgCard.find_by(uuid: params[:id])
   end
