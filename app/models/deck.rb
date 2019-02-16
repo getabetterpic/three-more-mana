@@ -18,4 +18,20 @@ class Deck < ApplicationRecord
     return false if cards.not_basic_land.any? { |card| !card.standard_legal? }
     true
   end
+
+  def mainboard
+    deck_cards.mainboard.includes(:card).map(&:card)
+  end
+
+  def sideboard
+    deck_cards.sideboard.includes(:card).map(&:card)
+  end
+
+  def to_s
+    str = ''
+    deck_cards.mainboard.includes(:card).each do |dc|
+      str += "#{dc.card_count}x #{dc.card.name}\n"
+    end
+    str
+  end
 end
