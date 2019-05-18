@@ -1,4 +1,6 @@
 class Deck < ApplicationRecord
+  include ResourceIds
+
   validates :name, presence: true
   validates :user, presence: true
 

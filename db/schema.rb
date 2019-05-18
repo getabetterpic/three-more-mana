@@ -10,11 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_03_134807) do
+ActiveRecord::Schema.define(version: 2019_05_18_120126) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "plpgsql"
+
+  create_table "card_import", id: false, force: :cascade do |t|
+    t.jsonb "doc"
+  end
 
   create_table "deck_cards", force: :cascade do |t|
     t.bigint "deck_id", null: false
@@ -32,6 +36,8 @@ ActiveRecord::Schema.define(version: 2019_02_03_134807) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "resource_id", null: false
+    t.index ["resource_id"], name: "index_decks_on_resource_id", unique: true
     t.index ["user_id"], name: "index_decks_on_user_id"
   end
 
