@@ -8,14 +8,18 @@ class Deck < ApplicationRecord
 
   def standard_legal?
     mainboard_hash = deck_cards.group(:mainboard).sum(:card_count)
+    # Must have exactly 60 cards in the mainboard
     return false unless mainboard_hash[true] == 60
+    # can have 0-15 cards in sideboard
     return false if mainboard_hash[false] && !mainboard_hash[false]&.in?(0..15)
+    # Only basic lands can have more than 4 cards
     return false if deck_cards.joins(:card)
       .where("mtg_cards.type_line NOT LIKE 'Basic Land%'")
       .group("mtg_cards.name")
       .sum("deck_cards.card_count")
-      .any? { |k, v| v > 4 }
-    return false if cards.not_basic_land.any? { |card| !card.standard_legal? }
+      .any? { |_, v| v > 4 }
+    # Only standard legal non-basic lands are allowed
+    return false unless cards.not_basic_land.all?(&:standard_legal?)
     true
   end
 

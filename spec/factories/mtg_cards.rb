@@ -1,10 +1,11 @@
 FactoryBot.define do
   factory :mtg_card do
     uuid { SecureRandom.uuid }
-    name { 'River Sneak' }
+    name { Faker::Name.name }
     layout { 'normal' }
     set_code { 'xln' }
     rarity { 'uncommon' }
+    type_line { 'Creature' }
 
     trait :with_set do
       before(:create) do
@@ -22,6 +23,10 @@ FactoryBot.define do
 
     trait :legacy do
       legalities { { 'legacy' => 'legal' } }
+    end
+
+    trait :not_standard do
+      legalities { { 'standard' => 'not_legal' } }
     end
   end
 end
