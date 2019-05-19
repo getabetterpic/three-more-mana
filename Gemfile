@@ -34,7 +34,7 @@ gem 'ruby-progressbar'
 gem 'kaminari-activerecord'
 
 # For efficient monitoring of Windows directory changes
-gem 'wdm', '>= 0.1.0' if Gem.win_platform?
+gem 'wdm', '>= 0.1.0', :platforms => [:x64_mingw]
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
