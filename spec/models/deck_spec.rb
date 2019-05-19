@@ -10,7 +10,8 @@ RSpec.describe Deck, type: :model do
     subject { FactoryBot.create(:deck) }
 
     describe 'when less than 60 cards' do
-      let(:card) { FactoryBot.create(:mtg_card, :with_set, :standard, deck: subject) }
+      let(:card) { FactoryBot.create(:mtg_card, :with_set, :standard) }
+      let!(:deck_card) { FactoryBot.create(:deck_card, card: card, deck: subject, mainboard: true) }
 
       it { is_expected.to_not be_standard_legal }
     end
@@ -23,7 +24,7 @@ RSpec.describe Deck, type: :model do
         end
       end
 
-      it { is_expected.to_not be_standard_legal }
+      it { is_expected.to be_standard_legal }
     end
 
     describe 'when exactly 60 cards' do
