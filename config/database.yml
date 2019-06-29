@@ -84,6 +84,4 @@ test:
 #
 production:
   <<: *default
-  database: three-more-mana_production
-  username: three-more-mana
-  password: <%= ENV['THREE-MORE-MANA_DATABASE_PASSWORD'] %>
+  url: <%= ENV['DATABASE_URL'] %>

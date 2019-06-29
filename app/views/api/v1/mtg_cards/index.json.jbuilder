@@ -10,7 +10,7 @@ json.cards do
     json.mana_cost card.mana_cost
     json.cmc card.cmc
     json.card_type card.type_line
-    json.card_text card.oracle_text
+    json.card_text card.oracle_text&.gsub(/\n/, '\\\n')
     json.power card.power
     json.toughness card.toughness
     json.colors card.colors

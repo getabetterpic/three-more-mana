@@ -13,6 +13,7 @@ class MtgCard < ApplicationRecord
   scope :modern_legal, -> { where("legalities->>'modern' = 'legal'") }
   scope :legacy_legal, -> { where("legalities->>'legacy' = 'legal'") }
   scope :commander_legal, -> { where("legalities->>'commander' = 'legal'") }
+  scope :future_legal, -> { where("legalities->>'future' = 'legal'") }
   scope :legal, -> { standard_legal.or(modern_legal).or(legacy_legal).or(commander_legal) }
   scope :not_land, -> { where('type_line NOT LIKE ?', '%Land%') }
   scope :not_basic_land, -> { where('type_line NOT LIKE ?', '%Basic Land%') }
@@ -20,7 +21,11 @@ class MtgCard < ApplicationRecord
   def self.from_api(json)
     card = find_or_initialize_by(uuid: json['id'])
     card.set_code = json['set']
-    card.update_attributes(json.slice(*API_ATTRS))
+    if card.persisted?
+      card.update_attributes(json.slice(*API_ATTRS)) unless card.legalities == json['legalities']
+    else
+      card.update_attributes(json.slice(*API_ATTRS))
+    end
   end
 
   def standard_legal?
