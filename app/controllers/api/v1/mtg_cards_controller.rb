@@ -9,6 +9,7 @@ class Api::V1::MtgCardsController < Api::V1Controller
     @cards = @cards.where("mtg_sets.released_at < ?", Date.today) unless params[:q].present?
     @cards = @cards.standard_legal if params[:standard_legal] == 'true'
     @cards = @cards.where('mtg_cards.name ILIKE ?', "%#{params[:q]}%") if params[:q].present?
+    @cards = @cards.where(uuid: params[:ids]) if params[:ids].present?
     @cards = @cards.page(params[:page]).per(30)
   end
 end
