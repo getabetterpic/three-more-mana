@@ -40,4 +40,11 @@ class Deck < ApplicationRecord
     end
     str
   end
+
+  def add_card(card:, mainboard: true, count: 1)
+    deck_card = deck_cards.find_or_initialize_by(card: card, mainboard: mainboard)
+    deck_card.mainboard = mainboard
+    deck_card.card_count = count
+    save
+  end
 end
