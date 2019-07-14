@@ -9,11 +9,12 @@ class CardSearcher
     @params = params
     if params[:q].present?
       search_text
-    else
+    elsif !params[:set].present?
       only_released_cards
     end
     search_legalities
     search_ids
+    search_sets
     cards
   end
 
@@ -30,13 +31,22 @@ class CardSearcher
 
   def search_legalities
     @cards = cards.standard_legal if check_standard?
+    @cards = cards.modern_legal if check_modern?
   end
 
   def search_ids
     @cards = cards.where(uuid: params[:ids]) if params[:ids].present?
   end
 
+  def search_sets
+    @cards = cards.where('mtg_sets.code = ?', params[:set]) if params[:set].present?
+  end
+
   def check_standard?
     params[:standard_legal] == 'true'
+  end
+
+  def check_modern?
+    params[:modern_legal] == 'true'
   end
 end
