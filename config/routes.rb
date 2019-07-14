@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  post '/users/sign_in' => 'sessions#create'
+
   concern :paginatable do
     get '(page/:page)', action: :index, on: :collection, as: ''
   end
