@@ -8,7 +8,7 @@ json.art @card.image_uris&.fetch('art_crop', nil) || @card.card_faces&.dig(0, 'i
 json.mana_cost @card.mana_cost
 json.cmc @card.cmc
 json.card_type @card.type_line
-json.card_text @card.oracle_text.gsub(/\n/, '\\\n')
+json.card_text @card.oracle_text&.gsub(/\n/, '\\\n')
 json.power @card.power
 json.toughness @card.toughness
 json.colors @card.colors
