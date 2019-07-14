@@ -11,7 +11,7 @@ class Deck < ApplicationRecord
   def standard_legal?
     mainboard_hash = deck_cards.group(:mainboard).sum(:card_count)
     # Must have at least 60 cards in the mainboard
-    return false unless mainboard_hash[true] >= 60
+    return false unless mainboard_hash[true] && mainboard_hash[true] >= 60
     # can have 0-15 cards in sideboard
     return false if mainboard_hash[false] && !mainboard_hash[false]&.in?(0..15)
     # Only basic lands can have more than 4 cards
@@ -39,5 +39,12 @@ class Deck < ApplicationRecord
       str += "#{dc.card_count}x #{dc.card.name}\n"
     end
     str
+  end
+
+  def add_card(card:, mainboard: true, count: 1)
+    deck_card = deck_cards.find_or_initialize_by(card: card, mainboard: mainboard)
+    deck_card.mainboard = mainboard
+    deck_card.card_count = count
+    save
   end
 end
