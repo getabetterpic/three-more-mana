@@ -12,6 +12,12 @@ class User < ApplicationRecord
     self.access_token = generate_access_token if access_token.blank?
   end
 
+  def self.authenticate(email, password)
+    user = User.find_by(email: email)
+    return nil unless user && user.authenticate(password)
+    user
+  end
+
   private
 
   def generate_access_token
