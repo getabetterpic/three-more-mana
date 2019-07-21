@@ -14,6 +14,8 @@ class CardSearcher
     end
     search_legalities
     search_ids
+    search_mana_cost
+    search_cmc
     search_sets
     cards
   end
@@ -36,6 +38,14 @@ class CardSearcher
 
   def search_ids
     @cards = cards.where(uuid: params[:ids]) if params[:ids].present?
+  end
+
+  def search_mana_cost
+    @cards = cards.where('mana_cost ILIKE ?', "%#{params[:mana_cost]}%") if params[:mana_cost].present?
+  end
+
+  def search_cmc
+    @cards = cards.where('cmc = ?', params[:cmc]) if params[:cmc].present?
   end
 
   def search_sets
